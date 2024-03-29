@@ -1,39 +1,83 @@
 {
   "name": "rails-csrf",
-  "version": "1.0.1",
+  "version": "2.0.0",
+  "description": "Addon to keep track of your Rails CSRF-token.",
+  "keywords": [
+    "ember-addon"
+  ],
+  "repository": "",
+  "license": "MIT",
+  "author": "denniscdmc (original add-on by abuiles)",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
   "scripts": {
-    "start": "ember server",
-    "build": "ember build",
-    "test": "ember test"
+    "build": "ember build --environment=production",
+    "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:css:fix": "concurrently \"npm:lint:css -- --fix\"",
+    "lint:fix": "concurrently \"npm:lint:*:fix\" --names \"fix:\"",
+    "lint:hbs": "ember-template-lint .",
+    "lint:hbs:fix": "ember-template-lint . --fix",
+    "lint:js": "eslint . --cache",
+    "lint:js:fix": "eslint . --fix",
+    "start": "ember serve",
+    "test": "concurrently --kill-others-on-fail \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
+    "test:ember": "ember test",
+    "test:ember-compatibility": "echo [disabled:] ember try:each"
   },
-  "repository": "https://github.com/abuiles/rails-csrf",
-  "engines": {
-    "node": ">= 0.10.0"
-  },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
-    "ember-cli-babel": "6.x"
+    "@babel/core": "^7.23.2",
+    "ember-cli-babel": "^8.2.0",
+    "ember-cli-htmlbars": "^6.3.0",
+    "ember-fetch": "^8.1.2"
   },
   "devDependencies": {
-    "body-parser": "^1.2.0",
-    "broccoli-asset-rev": "0.3.0",
-    "broccoli-ember-hbs-template-compiler": "^1.6.1",
-    "ember-cli": "*",
-    "ember-cli-ic-ajax": "0.1.1",
-    "ember-cli-inject-live-reload": "^1.2.2",
-    "ember-cli-qunit": "0.1.0",
-    "ember-data": "1.0.0-beta.10",
-    "express": "^4.8.5",
-    "glob": "^4.0.5"
+    "@babel/eslint-parser": "^7.22.15",
+    "@babel/plugin-proposal-decorators": "^7.23.2",
+    "@ember/optional-features": "^2.0.0",
+    "@ember/test-helpers": "^3.2.0",
+    "@embroider/test-setup": "^3.0.2",
+    "@glimmer/component": "^1.1.2",
+    "@glimmer/tracking": "^1.1.2",
+    "broccoli-asset-rev": "^3.0.0",
+    "concurrently": "^8.2.2",
+    "ember-auto-import": "^2.6.3",
+    "ember-cli": "~5.4.1",
+    "ember-cli-clean-css": "^3.0.0",
+    "ember-cli-dependency-checker": "^3.3.2",
+    "ember-cli-inject-live-reload": "^2.1.0",
+    "ember-cli-sri": "^2.1.1",
+    "ember-cli-terser": "^4.0.2",
+    "ember-load-initializers": "^2.1.2",
+    "ember-page-title": "^8.0.0",
+    "ember-qunit": "^8.0.1",
+    "ember-resolver": "^11.0.1",
+    "ember-source": "~5.4.0",
+    "ember-source-channel-url": "^3.0.0",
+    "ember-template-lint": "^5.11.2",
+    "ember-try": "^3.0.0",
+    "eslint": "^8.52.0",
+    "eslint-plugin-ember": "^11.11.1",
+    "eslint-plugin-n": "^16.2.0",
+    "eslint-plugin-qunit": "^8.0.1",
+    "loader.js": "^4.7.0",
+    "qunit": "^2.20.0",
+    "qunit-dom": "^2.0.0",
+    "stylelint": "^15.11.0",
+    "stylelint-config-standard": "^34.0.0",
+    "webpack": "^5.89.0"
   },
-  "keywords": [
-    "ember-addon"
-  ],
+  "peerDependencies": {
+    "ember-source": ">= 4.0.0"
+  },
+  "engines": {
+    "node": ">= 18"
+  },
+  "ember": {
+    "edition": "octane"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config"
   }

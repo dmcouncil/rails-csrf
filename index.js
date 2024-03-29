@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
-  name: 'rails-csrf'
+  name: require('./package').name,
 };

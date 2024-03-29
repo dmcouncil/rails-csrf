@@ -2,58 +2,60 @@
 
 ember-cli addon to keep track of your Rails CSRF-token.
 
-## Usage
 
-* `npm install rails-csrf --save`
-* In `app.js` add load initializers
+## Compatibility
 
-```js
-loadInitializers(App, 'rails-csrf');
+* Ember.js v4.8 or above
+* Ember CLI v4.8 or above
+* Node.js v18 or above
+
+
+## Installation
+
+```
+ember install rails-csrf
 ```
 
-* Add a before model to your application route so your token is
-  fetched automatically.
 
+## Usage
+
+In your app/adapters/application.js (make one if you don't have one)
 ```js
-export default Ember.Route.extend({
-  beforeModel: function() {
-    return this.csrf.fetchToken();
-  }
+@service csrfService;
+
+// This makes sure that every single API request Ember makes passes in the CSRF token
+get headers() {
+  return {
+    'X-CSRF-Token': this.csrfService.csrfToken
+  };
+}
+```
+
+In your app/routes/application.js
+```js
+@service csrfService;
+
+async beforeModel() {
+  return this.csrfService.fetchToken();
+},
+```
+
+If you use Pretender and want to mock CSRF in your specs, in tests/helpers/index.js
+```js
+import mockCsrf from 'rails-csrf/utils/mock-csrf-pretender';
+
+hooks.beforeEach(function () {
+  this.pretender = new Pretender();
+  mockCsrf(this.pretender);
 });
 ```
 
-## Config
-By default `rails-csrf` does a get request to `/api/csrf`, if you
-want to customize the end-point use `setCsrfUrl` on app.js
 
-```js
-import { setCsrfUrl } from 'rails-csrf/config';
+## Contributing
 
-setCsrfUrl('/api/your/own/endpoint');
-...
-loadInitializers(App, 'rails-csrf');
-```
+See the [Contributing](CONTRIBUTING.md) guide for details.
 
-## Returning CSRF-token from Rails
-
-The following controller will return the required payload to get
-everything working.
-
-```ruby
-class Api::CsrfController < ApplicationController
-  def index
-    render json: { request_forgery_protection_token => form_authenticity_token }.to_json
-  end
-end
-```
-
-Add route
-
-```
-namespace :api do
-  get :csrf, to: 'csrf#index'
-end
-```
 
 ## License
-rails-csrf is [MIT Licensed](https://github.com/abuiles/rails-csrf/blob/master/LICENSE).
+
+This project is licensed under the [MIT License](LICENSE.md).
